@@ -1,2 +1,1 @@
-# CSharpUnitTestingBestPractices
-Unit Testing in C# (Best Practices)
+# Unit Testing in C# (Best Practices)
