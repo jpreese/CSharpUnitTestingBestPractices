@@ -75,7 +75,7 @@ The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, a
 
 #### Why?
 - Clearly separates what is being tested from the setup and verification steps.
-- Less chance to intermix assertions with "Act" code
+- Less chance to intermix assertions with "Act" code.
 
 #### Bad:
 ```csharp
@@ -89,7 +89,7 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 }
 ```
 
-#### Best:
+#### Better:
 ```csharp
 public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 {
@@ -103,9 +103,9 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 
 ### Naming Your Tests
 The name of your test should consist of three parts
-- The name of the method being tested
-- The scenario under which it's being tested
-- The expected behavior when the scenario is invoked
+- The name of the method being tested.
+- The scenario under which it's being tested.
+- The expected behavior when the scenario is invoked.
 
 #### Why?
 - Naming standards are important because they explicitly express intent of the test.
@@ -122,7 +122,7 @@ public void Test_Invalid()
 }
 ```
 
-### Better:
+#### Better:
 ```csharp
 public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 {
