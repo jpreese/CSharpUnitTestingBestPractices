@@ -23,11 +23,11 @@ Consider the following code snippet:
 
 ```csharp
 var mockOrder = new MockOrder();
-var sut = new Purchase(mockOrder);
+var purchase = new Purchase(mockOrder);
 
-sut.ValidateOrders();
+purchase.ValidateOrders();
 
-Assert.True(sut.CanBeShipped);
+Assert.True(purchase.CanBeShipped);
 ```
 
 This would be an example of Mock being used improperly. In this case, it is a stub. We're just passing in the Order as a means to be able to instantiate `Purchase` (the system under test). The name `MockOrder` is also very misleading because again, the order is not a mock.
@@ -36,11 +36,11 @@ A better approach would be
 
 ```csharp
 var fakeOrder = new FakeOrder();
-var sut = new Purchase(fakeOrder);
+var purchase = new Purchase(fakeOrder);
 
-sut.ValidateOrders();
+purchase.ValidateOrders();
 
-Assert.True(sut.CanBeShipped);
+Assert.True(purchase.CanBeShipped);
 ```
 
 By renaming the class to `FakeOrder`, we've made the class a lot more generic, the class can be used as a mock or a stub. Whichever is better for the test case. In the above example, `FakeOrder` is used as a stub. We're not using the `FakeOrder` in any shape or form during the assert. We just passed it into the `Purchase` class to satisfy the requirements of the constructor.
@@ -49,9 +49,9 @@ To use it as a Mock, we could do something like this
 
 ```csharp
 var fakeOrder = new FakeOrder();
-var sut = new Purchase(fakeOrder);
+var purchase = new Purchase(fakeOrder);
 
-sut.ValidateOrders();
+purchase.ValidateOrders();
 
 Assert.True(fakeOrder.Validated);
 ```
@@ -63,4 +63,74 @@ In this case, we are checking a property on the Fake (asserting against it), so 
 The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub. Which means that only mocks can break your tests, not stubs.
 
 
+## Best Practices
+1. [Arranging Your Tests](#arranging-your-tests)
+1. [Naming Your Tests](#naming-your-tests)
+
+### Arranging Your Tests
+The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
+- *Arrange* your objects, creating and setting them up as necessary.
+- *Act* on an object.
+- *Assert* that something is as expected.
+
+#### Why?
+- Clearly separates what is being tested from the setup and verification steps.
+- Less chance to intermix assertions with "Act" code
+
+#### Bad:
+```csharp
+public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+{
+    // Arrange
+    var glossary = new Glossary();
+
+    // Assert
+    Assert.False(glossary.IsValidWord(null));
+}
+```
+
+#### Best:
+```csharp
+public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+{
+    var numberValidator = new NumberValidator();
+    
+    var result = numberValidator.IsValidWord(null);
+
+    Assert.False(result);
+}
+```
+
+### Naming Your Tests
+The name of your test should consist of three parts
+- The name of the method being tested
+- The scenario under which it's being tested
+- The expected behavior when the scenario is invoked
+
+#### Why?
+- Naming standards are important because they explicitly express intent of the test.
+
+#### Bad:
+```csharp
+public void Test_Invalid()
+{
+    var glossary = new Glossary();
+
+    var result = glossary.IsValidWord(null);
+
+    Assert.False(result);
+}
+```
+
+### Better:
+```csharp
+public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+{
+    var glossary = new Glossary();
+
+    var result = glossary.IsValidWord(null);
+
+    Assert.False(result);
+}
+```
 
