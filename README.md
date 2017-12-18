@@ -186,7 +186,7 @@ public void Initialize()
     glossary = new Glossary();
 }
 
-...
+// more tests..
 
 public void ParseWord_NullValue_ThrowsArgumentException()
 {
@@ -219,7 +219,7 @@ public void ParseWord_EmptyString_ReturnsEmptyString()
     Assert.Empty(result);
 }
 
-..
+// more tests..
 
 public Glossary CreateDefaultGlossary()
 {
