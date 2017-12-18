@@ -66,8 +66,10 @@ The main thing to remember about mocks versus stubs is that mocks are just like 
 ## Best Practices
 1. [Arranging Your Tests](#arranging-your-tests)
 1. [Naming Your Tests](#naming-your-tests)
-1. [Avoid Logic in Tests](#avoid-logic-in-tests)
+1. [Avoid Magic Strings](#naming-your-variables)
+1. [No Logic In Tests](#no-logic-logic-in-tests)
 1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
+
 
 ### Arranging Your Tests
 The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
@@ -136,8 +138,47 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 }
 ```
 
-### Avoid Logic in Tests
-When writing your unit tests avoid manual string concatenation and logical conditions such as `if`, `while`, `for`, etc.
+## Best Practices
+1. [Arranging Your Tests](#arranging-your-tests)
+1. [Naming Your Tests](#naming-your-tests)
+1. [Avoid Magic Strings](#naming-your-variables)
+1. [No Logic In Tests](#no-logic-logic-in-tests)
+1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
+
+### Avoid Magic Strings
+Naming variables in unit tests is as important, if not more important, than naming variables in production code. Unit tests should not contain magic strings.
+
+#### Why?
+- Prevents the need for the reader to inspect the production code to figure out what makes the value special.
+- Explicitly shows what you're trying to *prove* rather than trying to *accomplish*.
+
+#### Bad:
+```csharp
+public void ParseWordReturnsErrorCodeWhenInputIsNumber()
+{
+    var glossary = new Glossary();
+
+    var result = glossary.ParseWord("1");
+
+    Assert.Equal(-1, result);
+}
+```
+
+#### Better:
+```csharp
+public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
+{
+    var glossary = new Glossary();
+    const int INVALID_INPUT = -1;
+
+    var result = glossary.ParseWord("1");
+
+    Assert.Equal(INVALID_INPUT, result);
+}
+```
+
+### No Logic in Tests
+When writing your unit tests avoid manual string concatenation and logical conditions such as `if`, `while`, `for`, `switch`, etc.
 
 #### Why?
 - Less chance to introduce a bug inside of your tests.
@@ -226,4 +267,5 @@ public Glossary CreateDefaultGlossary()
     return new Glossary();
 }
 ```
+
 
