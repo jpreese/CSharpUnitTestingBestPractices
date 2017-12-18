@@ -62,14 +62,14 @@ In this case, we are checking a property on the Fake (asserting against it), so 
 
 The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub. Which means that only mocks can break your tests, not stubs.
 
-
 ## Best Practices
 1. [Arranging Your Tests](#arranging-your-tests)
 1. [Naming Your Tests](#naming-your-tests)
 1. [Avoid Magic Strings](#naming-your-variables)
 1. [No Logic In Tests](#no-logic-logic-in-tests)
 1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
-
+1. [Avoid Multiple Asserts](#avoid-multiple-asserts)
+1. [Write Minimally Passing Tests](#write-minimally-passing-tests)
 
 ### Arranging Your Tests
 The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
@@ -265,6 +265,83 @@ public void ParseWord_EmptyString_ReturnsEmptyString()
 public Glossary CreateDefaultGlossary()
 {
     return new Glossary();
+}
+```
+
+### Avoid Multiple Asserts
+When writing your tests, try to only include one Assert per test. Common approaches to use only one assert include:
+- Create a seperate test for each assert.
+- Use parameterized tests.
+
+#### Why?
+- If one Assert fails, the preceeding Asserts will not be evaluated.
+- Ensures you are not asserting multiple cases in your tests.
+
+#### Bad:
+```csharp
+public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse()
+{
+    var glossary = new Glossary();
+
+    Assert.False(glossary.IsValidWord(null)); // potential NullException
+    Assert.False(glossary.IsValidWord("")); // this never gets executed if the above test fails
+}
+```
+
+#### Better:
+```csharp
+[InlineData(null)]
+[InlineData("")]
+public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse(string input)
+{
+    var glossary = new Glossary();
+    
+    var result = glossary.IsValidWord(input);
+
+    Assert.False(result);
+}
+```
+
+*Note: A common exception to this best practice is when you are validating the state of an object.*
+
+### Write Minimally Passing Tests
+Input to be used in a unit test should be the simplest possible in order to pass the test. If you're creating a stub object, you should only set the values of the object that are of importance in the test.
+
+#### Why?
+- Tests become more resilient to future changes in the codebase.
+- Closer to testing behavior over implementation.
+
+#### Bad:
+```csharp
+[InlineData("aardvark")]
+[InlineData("elephant")]
+[InlineData("iguana")]
+[InlineData("orangutan")]
+[InlineData("unicorn")]
+public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
+{
+    var glossary = new Glossary();
+
+    var result = glossary.WordStartsWithVowel(input);
+
+    Assert.True(result);
+}
+```
+
+#### Better:
+```csharp
+[InlineData("a")]
+[InlineData("e")]
+[InlineData("i")]
+[InlineData("o")]
+[InlineData("u")]
+public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
+{
+    var glossary = new Glossary();
+
+    var result = glossary.WordStartsWithVowel(input);
+
+    Assert.True(result);
 }
 ```
 
