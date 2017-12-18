@@ -1,4 +1,5 @@
 # Unit Testing in C#
+[//]: # (Adding a test comment)
 
 ## Purpose
 The purpose of this best practices document is to offer suggested best practices when writing unit tests in C#.
