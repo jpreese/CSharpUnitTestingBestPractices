@@ -6,9 +6,9 @@ The purpose of this best practices document is to offer suggested best practices
 ## What Makes a Good Unit Test
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
 - **Isolated**. Unit tests are to be run in isolation and have no dependencies on an outside factor such as a file system or database.
-- **Repeatable**. Running a unit test should be consistent in its results, that is, it always returns the same result if you do not change anything inbetween runs.
+- **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
 - **Self-Checking**. The test should be able to automatically detect if it passed or failed without any human interaction.
-- **Timely**. A unit test and the code being tested should not take a disporpotionaly long time to write.
+- **Timely**. A unit test and the code being tested should not take a disproportionally long time to write.
 
 ## Lets Speak the Same Language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
@@ -78,7 +78,7 @@ The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, a
 - *Assert* that something is as expected.
 
 #### Why?
-- Clearly separates what is being tested from the setup and verification steps.
+- Clearly separates what is being tested from the *arrange* and *assert* steps.
 - Less chance to intermix assertions with "Act" code.
 
 #### Bad:
@@ -214,7 +214,7 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 If you require a similar object or state for your tests, prefer a helper method than leveraging Setup and Teardown attributes if they exist.
 
 #### Why?
-- Less confusion when reading the tests. All of the code is visible from within each test.
+- Less confusion when reading the tests since all of the code is visible from within each test.
 - Less chance of setting up too much or too little for the given test.
 
 #### Bad:
@@ -269,12 +269,12 @@ public Glossary CreateDefaultGlossary()
 ```
 
 ### Avoid Multiple Asserts
-When writing your tests, try to only include one Assert per test. Common approaches to use only one assert include:
-- Create a seperate test for each assert.
+When writing your tests, try to only include one Assert per test. Common approaches to using only one assert include:
+- Create a separate test for each assert.
 - Use parameterized tests.
 
 #### Why?
-- If one Assert fails, the preceeding Asserts will not be evaluated.
+- If one Assert fails, the preceding Asserts will not be evaluated.
 - Ensures you are not asserting multiple cases in your tests.
 
 #### Bad:
@@ -305,7 +305,7 @@ public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse(string input)
 *Note: A common exception to this best practice is when you are validating the state of an object.*
 
 ### Write Minimally Passing Tests
-Input to be used in a unit test should be the simplest possible in order to pass the test. If you're creating a stub object, you should only set the values of the object that are of importance in the test.
+The input to be used in a unit test should be the simplest possible in order to pass the test. If you're creating a stub object, you should only set the values of the object that are of importance in the test.
 
 #### Why?
 - Tests become more resilient to future changes in the codebase.
@@ -344,5 +344,3 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
     Assert.True(result);
 }
 ```
-
-
