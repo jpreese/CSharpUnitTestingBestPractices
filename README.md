@@ -1,15 +1,16 @@
 # Unit Testing in C#
-[//]: # (Adding a test comment)
+[//]: # (robkeim: Great stuff here! I don't know where I'd put it but one thing that would be helpful to know for people learning about unit tests is that you should test both positive and negative behavior. It's common for people when starting out to only test the cases they expect to work, and not the cases that you know won't work.)
 
 ## Purpose
 The purpose of this best practices document is to offer suggested best practices when writing unit tests in C#.
 
 ## What Makes a Good Unit Test
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
-- **Isolated**. Unit tests are to be run in isolation and have no dependencies on an outside factor such as a file system or database.
+- **Isolated**. Unit tests are standalone and can be run in isolation and have no dependencies on any outside factors such as a file system or database.
 - **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
 - **Self-Checking**. The test should be able to automatically detect if it passed or failed without any human interaction.
 - **Timely**. A unit test and the code being tested should not take a disproportionally long time to write.
+[//]: # (robkeim: I read this in two different ways: 1. A unit test shouldn't take a disproportionally long time to write compared to the code. If that's what you're going for I'd provide some guideline on "disproportionally"... maybe 1.5x the cost of writing the code? 2. Writing a block of work - code and test - shouldn't take a "long" time. In that case as well, I'd provide another guideline. If your work unit takes longer than 2 days it should be broken into smaller, more managable sub-components.)
 
 ## Lets Speak the Same Language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
@@ -105,7 +106,7 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
     Assert.False(result);
 }
 ```
-
+[//]: # (robkeim: Is there a reason you removed the Arrange, Act, Assert comments in the better example? It makes it seem like you're suggesting it's better not to have those, which you totally might be but I'm personally a fan of leaving them in. You also don't seem to use them consistently throughout the examples so maybe you prefer not having them in a general case and added only here?)
 ### Naming Your Tests
 The name of your test should consist of three parts
 - The name of the method being tested.
@@ -148,7 +149,7 @@ Naming variables in unit tests is as important, if not more important, than nami
 
 #### Bad:
 ```csharp
-public void ParseWordReturnsErrorCodeWhenInputIsNumber()
+public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 {
     var glossary = new Glossary();
 
@@ -157,6 +158,7 @@ public void ParseWordReturnsErrorCodeWhenInputIsNumber()
     Assert.Equal(-1, result);
 }
 ```
+[//]: # (robkeim: Looks like you started dropping the When in the second part here in the examples. Should when be removed/added everywhere for consistency?)
 
 #### Better:
 ```csharp
@@ -191,6 +193,7 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
     Assert.Equals(string.Format("{0},{1}", firstWord, secondWord), result);
 }
 ```
+[//]: # (Where's your string interpolation at? We're almost in 2017 :)
 
 #### Better:
 ```csharp
@@ -210,6 +213,7 @@ If you require a similar object or state for your tests, prefer a helper method 
 #### Why?
 - Less confusion when reading the tests since all of the code is visible from within each test.
 - Less chance of setting up too much or too little for the given test.
+- Less chance of sharing state between tests which creates unwanted dependencies between them.
 
 #### Bad:
 ```csharp
@@ -268,7 +272,7 @@ When writing your tests, try to only include one Assert per test. Common approac
 - Use parameterized tests.
 
 #### Why?
-- If one Assert fails, the preceding Asserts will not be evaluated.
+- If one Assert fails, the subsequent Asserts will not be evaluated.
 - Ensures you are not asserting multiple cases in your tests.
 
 #### Bad:
