@@ -66,6 +66,8 @@ The main thing to remember about mocks versus stubs is that mocks are just like 
 ## Best Practices
 1. [Arranging Your Tests](#arranging-your-tests)
 1. [Naming Your Tests](#naming-your-tests)
+1. [Avoid Logic in Tests](#avoid-logic-in-tests)
+1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
 
 ### Arranging Your Tests
 The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
@@ -131,6 +133,97 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
     var result = glossary.IsValidWord(null);
 
     Assert.False(result);
+}
+```
+
+### Avoid Logic in Tests
+When writing your unit tests avoid manual string concatenation and logical conditions such as `if`, `while`, `for`, etc.
+
+#### Why?
+- Less chance to introduce a bug inside of your tests.
+- Focus on the end result, rather than implementation details.
+
+#### Bad:
+```csharp
+public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+{
+    var glossary = new Glossary();
+    var firstWord = "a";
+    var secondWord = "b";
+
+    var result = glossary.ConcatenateWords(firstWord, secondWord);
+
+    Assert.Equals(string.Format("{0},{1}", firstWord, secondWord), result);
+}
+```
+
+#### Better:
+```csharp
+public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+{
+    var glossary = new Glossary();
+
+    var result = glossary.ConcatenateWords("a", "b");
+
+    Assert.Equals("a,b", result);
+}
+```
+
+### Prefer Helper Methods to Setup and Teardown
+If you require a similar object or state for your tests, prefer a helper method than leveraging Setup and Teardown attributes if they exist.
+
+#### Why?
+- Less confusion when reading the tests. All of the code is visible from within each test.
+- Less chance of setting up too much or too little for the given test.
+
+#### Bad:
+```csharp
+Glossary glossary;
+
+[SetUp]
+public void Initialize()
+{
+    glossary = new Glossary();
+}
+
+...
+
+public void ParseWord_NullValue_ThrowsArgumentException()
+{
+    Assert.Throws<ArgumentException>(() => glossary.ParseWord(null));
+}
+
+public void ParseWord_EmptyString_ReturnsEmptyString()
+{
+    Assert.Empty(glossary.ParseWord(""));
+}
+```
+
+#### Better:
+```csharp
+public void ParseWord_NullValue_ThrowsArgumentException()
+{
+    var glossary = CreateDefaultGlossary();
+
+    var result = () => glossary.ParseWord(null);
+
+    Assert.Throws<ArgumentException>(result);
+}
+
+public void ParseWord_EmptyString_ReturnsEmptyString()
+{
+    var glossary = CreateDefaultGlossary();
+
+    var result = glossary.ParseWord("");
+
+    Assert.Empty(result);
+}
+
+..
+
+public Glossary CreateDefaultGlossary()
+{
+    return new Glossary();
 }
 ```
 
