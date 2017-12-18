@@ -138,13 +138,6 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 }
 ```
 
-## Best Practices
-1. [Arranging Your Tests](#arranging-your-tests)
-1. [Naming Your Tests](#naming-your-tests)
-1. [Avoid Magic Strings](#naming-your-variables)
-1. [No Logic In Tests](#no-logic-in-tests)
-1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
-
 ### Avoid Magic Strings
 Naming variables in unit tests is as important, if not more important, than naming variables in production code. Unit tests should not contain magic strings.
 
