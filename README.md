@@ -454,7 +454,7 @@ public void CanPerformOperation_OnSunday_ReturnsTrue()
     var dateTimeProviderStub = new Mock<IDateTimeProvider>();
     dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Sunday);
 
-    var result = operationService.CanPerformOperation(_dateTimeProvider);
+    var result = operationService.CanPerformOperation(dateTimeProviderStub);
 
     Assert.True(result);
 }
@@ -465,10 +465,10 @@ public void CanPerformOperation_OnMonday_ReturnsFalse()
     var dateTimeProviderStub = new Mock<IDateTimeProvider>();
     dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
 
-    var result = operationService.CanPerformOperation(_dateTimeProvider);
+    var result = operationService.CanPerformOperation(dateTimeProviderStub);
 
     Assert.False(result);
 }
 ```
 
-Now the test suite has full control over DateTime.Now and can stub any value when calling into the method.
+Now the test suite has full control over `DateTime.Now` and can stub any value when calling into the method.
