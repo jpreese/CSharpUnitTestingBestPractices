@@ -83,7 +83,7 @@ The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, a
 
 #### Bad:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     // Arrange
     var glossary = new Glossary();
@@ -95,7 +95,7 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 
 #### Better:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     var numberValidator = new NumberValidator();
     
@@ -128,7 +128,7 @@ public void Test_Invalid()
 
 #### Better:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     var glossary = new Glossary();
 
@@ -156,7 +156,6 @@ public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
     Assert.Equal(-1, result);
 }
 ```
-[//]: # (robkeim: Looks like you started dropping the When in the second part here in the examples. Should when be removed/added everywhere for consistency?)
 
 #### Better:
 ```csharp
