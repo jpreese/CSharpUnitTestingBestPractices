@@ -341,7 +341,7 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 
 ## How Do I...?
 1. [Test Private Methods](#test-private-methods)
-1. [Stub Static Refereces](#stub-static-refereces)
+1. [Stub Static References](#stub-static-references)
 
 ### Test Private Methods
 TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
