@@ -56,11 +56,11 @@ purchase.ValidateOrders();
 Assert.True(fakeOrder.Validated);
 ```
 
-In this case, we are checking a property on the Fake (asserting against it), so in the above code snippet the `fakeOrder` is a Mock.
+In this case, we are checking a property on the Fake (asserting against it), so in the above code snippet, the `fakeOrder` is a Mock.
 
 **It's important to get this terminology correct. If you call your stubs "mocks", other developers are going to make false assumptions about your intent.**
 
-The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub. Which means that only mocks can break your tests, not stubs.
+The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub.
 
 ## Best Practices
 1. [Arranging Your Tests](#arranging-your-tests)
@@ -106,7 +106,7 @@ public void IsValidWord_InputIsNull_ReturnsFalse()
 ```
 
 ### Naming Your Tests
-The name of your test should consist of three parts
+The name of your test should consist of three parts:
 - The name of the method being tested.
 - The scenario under which it's being tested.
 - The expected behavior when the scenario is invoked.
