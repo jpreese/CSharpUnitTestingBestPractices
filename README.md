@@ -344,7 +344,9 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 1. [Stub Static Members](#stub-static-members)
 
 ### Test Private Methods
-TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. Consider the following case
+TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
+
+Consider the following case
 
 ```csharp
 public string ParseLogLine(string input)
@@ -416,10 +418,11 @@ public void CanPerformOperation_OnMonday_ReturnsFalse()
 }
 ```
 
-Unfortunately, you will quickly realize that you can never get both of these tests to pass. 
+Unfortunately, you will quickly realize that there are a few problems with your tests. 
 
-- If you run the test suite on a Sunday, the first test will pass, and the second test will fail.
-- If you run the test suite on another day, the first test will pass, but the second test will fail.
+- If the test suite is ran on a Sunday, the first test will pass, and the second test will fail.
+- If the test suite is ran on any other day, the first test will pass, but the second test will fail.
+- How is it even possible to test a specific day of the week..?
 
 To solve this problem, you'll need to introduce a *seam* into your production code. One approach to solve this is to wrap the code that you need to control in an interface and have the production code depend on that interface.
 
