@@ -1,5 +1,4 @@
 # Unit Testing in C#
-[//]: # (robkeim: Great stuff here! I don't know where I'd put it but one thing that would be helpful to know for people learning about unit tests is that you should test both positive and negative behavior. It's common for people when starting out to only test the cases they expect to work, and not the cases that you know won't work.)
 
 ## Purpose
 The purpose of this best practices document is to offer suggested best practices when writing unit tests in C#.
@@ -9,8 +8,7 @@ The purpose of this best practices document is to offer suggested best practices
 - **Isolated**. Unit tests are standalone and can be run in isolation and have no dependencies on any outside factors such as a file system or database.
 - **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
 - **Self-Checking**. The test should be able to automatically detect if it passed or failed without any human interaction.
-- **Timely**. A unit test and the code being tested should not take a disproportionally long time to write.
-[//]: # (robkeim: I read this in two different ways: 1. A unit test shouldn't take a disproportionally long time to write compared to the code. If that's what you're going for I'd provide some guideline on "disproportionally"... maybe 1.5x the cost of writing the code? 2. Writing a block of work - code and test - shouldn't take a "long" time. In that case as well, I'd provide another guideline. If your work unit takes longer than 2 days it should be broken into smaller, more managable sub-components.)
+- **Timely**. A unit test should not take a disproportionally long time to write compared to the code being tested. If you find testing the code taking a large amount of time compared to writing the code, reconsider a design that is more testable.
 
 ## Lets Speak the Same Language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
@@ -106,7 +104,7 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
     Assert.False(result);
 }
 ```
-[//]: # (robkeim: Is there a reason you removed the Arrange, Act, Assert comments in the better example? It makes it seem like you're suggesting it's better not to have those, which you totally might be but I'm personally a fan of leaving them in. You also don't seem to use them consistently throughout the examples so maybe you prefer not having them in a general case and added only here?)
+
 ### Naming Your Tests
 The name of your test should consist of three parts
 - The name of the method being tested.
@@ -193,7 +191,6 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
     Assert.Equals(string.Format("{0},{1}", firstWord, secondWord), result);
 }
 ```
-[//]: # (Where's your string interpolation at? We're almost in 2017 :)
 
 #### Better:
 ```csharp
