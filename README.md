@@ -13,9 +13,9 @@ The purpose of this best practices document is to offer suggested best practices
 ## Lets Speak the Same Language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
 
-*Fake* - A fake is a generic term which can be used to describe either a Stub or a Mock object. Whether it is a Stub or a Mock depends on the context in which it's used. So in other words, a Fake can be a Stub or a Mock.
+*Fake* - A fake is a generic term which can be used to describe either a stub or a mock object. Whether it is a stub or a mock depends on the context in which it's used. So in other words, a fake can be a stub or a mock.
 
-*Mock* - A mock object is a fake object in the system that decides whether or not a unit test has passed or failed. A Mock starts out as a Fake until it is asserted against.
+*Mock* - A mock object is a fake object in the system that decides whether or not a unit test has passed or failed. A mock starts out as a Fake until it is asserted against.
 
 *Stub* - A stub is a controllable replacement for an existing dependency (or collaborator) in the system. By using a stub, you can test your code without dealing with the dependency directly. By default, a fake starts out as a stub.
 
@@ -35,8 +35,8 @@ This would be an example of Mock being used improperly. In this case, it is a st
 A better approach would be
 
 ```csharp
-var fakeOrder = new FakeOrder();
-var purchase = new Purchase(fakeOrder);
+var stubOrder = new FakeOrder();
+var purchase = new Purchase(stubOrder);
 
 purchase.ValidateOrders();
 
@@ -48,15 +48,15 @@ By renaming the class to `FakeOrder`, we've made the class a lot more generic, t
 To use it as a Mock, we could do something like this
 
 ```csharp
-var fakeOrder = new FakeOrder();
-var purchase = new Purchase(fakeOrder);
+var mockOrder = new FakeOrder();
+var purchase = new Purchase(mockOrder);
 
 purchase.ValidateOrders();
 
-Assert.True(fakeOrder.Validated);
+Assert.True(mockOrder.Validated);
 ```
 
-In this case, we are checking a property on the Fake (asserting against it), so in the above code snippet, the `fakeOrder` is a Mock.
+In this case, we are checking a property on the Fake (asserting against it), so in the above code snippet, the `mockOrder` is a Mock.
 
 **It's important to get this terminology correct. If you call your stubs "mocks", other developers are going to make false assumptions about your intent.**
 
