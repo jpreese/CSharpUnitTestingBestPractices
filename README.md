@@ -420,7 +420,7 @@ public void CanPerformOperation_OnMonday_ReturnsFalse()
 Unfortunately, you will quickly realize that there are a few problems with your tests. 
 
 - If the test suite is ran on a Sunday, the first test will pass, and the second test will fail.
-- If the test suite is ran on any other day, the first test will pass, but the second test will fail.
+- If the test suite is ran on any other day, the first test will fail, and the second test will pass.
 - How is it even possible to test a specific day of the week..?
 
 To solve this problem, you'll need to introduce a *seam* into your production code. One approach to solve this is to wrap the code that you need to control in an interface and have the production code depend on that interface.
