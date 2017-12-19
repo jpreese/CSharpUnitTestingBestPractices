@@ -341,7 +341,7 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 
 ## How Do I...?
 1. [Test Private Methods](#test-private-methods)
-1. [Stub Static Members](#stub-static-members)
+1. [Stub Static Refereces](#stub-static-refereces)
 
 ### Test Private Methods
 TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
@@ -378,13 +378,12 @@ public void ParseLogLine_ByDefault_ReturnsTrimmedResult()
 
 With this viewpoint, if you see a private method, find the public method and write your tests against that method. Just because a private method returns the expected result, does not mean the system that eventually calls the private method uses the result correctly.
 
-### Stub Static Members
-One of the principles of a unit test is that the test must have full control of the system under test. This can be problematic when production code includes calls to static members such as `DateTime.Now` or `Random()`. Consider the following code
+### Stub Static References
+One of the principles of a unit test is that it must have full control of the system under test. This can be problematic when production code includes calls to static references such as `DateTime.Now` or `Random()`. Consider the following code
 
 ```csharp
 public bool CanPerformOperation()
 {
-    // only allow the operation to be performed on a weekend
     if(DateTime.Now == DayOfWeek.Sunday) 
     {
         return true;
