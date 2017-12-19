@@ -97,9 +97,9 @@ public void IsValidWord_InputIsNull_ReturnsFalse()
 ```csharp
 public void IsValidWord_InputIsNull_ReturnsFalse()
 {
-    var numberValidator = new NumberValidator();
+    var glossary = new Glossary();
     
-    var result = numberValidator.IsValidWord(null);
+    var result = glossary.IsValidWord(null);
 
     Assert.False(result);
 }
@@ -273,7 +273,7 @@ When writing your tests, try to only include one Assert per test. Common approac
 
 #### Bad:
 ```csharp
-public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse()
+public void IsValidWord_InputIsNullOrEmpty_ReturnsFalse()
 {
     var glossary = new Glossary();
 
@@ -286,7 +286,7 @@ public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse()
 ```csharp
 [InlineData(null)]
 [InlineData("")]
-public void IsValidWord_WhenInputIsNullOrEmpty_ReturnsFalse(string input)
+public void IsValidWord_InputIsNullOrEmpty_ReturnsFalse(string input)
 {
     var glossary = new Glossary();
     
