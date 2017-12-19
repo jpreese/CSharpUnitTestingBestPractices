@@ -451,8 +451,8 @@ Your test suite now becomes
 public void CanPerformOperation_OnSunday_ReturnsTrue()
 {
     var operationService = new OperationService();
-    var _dateTimeProvider = new Mock<IDateTimeProvider>();
-    _dateTimeProvider.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Sunday);
+    var dateTimeProviderStub = new Mock<IDateTimeProvider>();
+    dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Sunday);
 
     var result = operationService.CanPerformOperation(_dateTimeProvider);
 
@@ -462,8 +462,8 @@ public void CanPerformOperation_OnSunday_ReturnsTrue()
 public void CanPerformOperation_OnMonday_ReturnsFalse()
 {
     var operationService = new OperationService();
-    var _dateTimeProvider = new Mock<IDateTimeProvider>();
-    _dateTimeProvider.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
+    var dateTimeProviderStub = new Mock<IDateTimeProvider>();
+    dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
 
     var result = operationService.CanPerformOperation(_dateTimeProvider);
 
