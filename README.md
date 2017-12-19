@@ -5,10 +5,10 @@ The purpose of this best practices document is to offer suggested best practices
 
 ## What Makes a Good Unit Test
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
-- **Isolated**. Unit tests are to be run in isolation and have no dependencies on an outside factor such as a file system or database.
+- **Isolated**. Unit tests are standalone and can be run in isolation and have no dependencies on any outside factors such as a file system or database.
 - **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
 - **Self-Checking**. The test should be able to automatically detect if it passed or failed without any human interaction.
-- **Timely**. A unit test and the code being tested should not take a disproportionally long time to write.
+- **Timely**. A unit test should not take a disproportionally long time to write compared to the code being tested. If you find testing the code taking a large amount of time compared to writing the code, reconsider a design that is more testable.
 
 ## Lets Speak the Same Language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
@@ -83,7 +83,7 @@ The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, a
 
 #### Bad:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     // Arrange
     var glossary = new Glossary();
@@ -95,7 +95,7 @@ public void IsValidWord_WhenInputIsNull_ReturnsFalse()
 
 #### Better:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     var numberValidator = new NumberValidator();
     
@@ -128,7 +128,7 @@ public void Test_Invalid()
 
 #### Better:
 ```csharp
-public void IsValidWord_WhenInputIsNull_ReturnsFalse()
+public void IsValidWord_InputIsNull_ReturnsFalse()
 {
     var glossary = new Glossary();
 
@@ -147,7 +147,7 @@ Naming variables in unit tests is as important, if not more important, than nami
 
 #### Bad:
 ```csharp
-public void ParseWordReturnsErrorCodeWhenInputIsNumber()
+public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 {
     var glossary = new Glossary();
 
@@ -209,6 +209,7 @@ If you require a similar object or state for your tests, prefer a helper method 
 #### Why?
 - Less confusion when reading the tests since all of the code is visible from within each test.
 - Less chance of setting up too much or too little for the given test.
+- Less chance of sharing state between tests which creates unwanted dependencies between them.
 
 #### Bad:
 ```csharp
@@ -267,7 +268,7 @@ When writing your tests, try to only include one Assert per test. Common approac
 - Use parameterized tests.
 
 #### Why?
-- If one Assert fails, the preceding Asserts will not be evaluated.
+- If one Assert fails, the subsequent Asserts will not be evaluated.
 - Ensures you are not asserting multiple cases in your tests.
 
 #### Bad:
