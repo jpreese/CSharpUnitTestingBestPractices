@@ -3,6 +3,21 @@
 ## Purpose
 The purpose of this best practices document is to offer suggested best practices when writing unit tests in C#.
 
+## Contents
+- [What Makes a Good Unit Test](#what-makes-a-good-unit-test)
+- [Lets Speak the Same Language](#lets-speak-the-same-language)
+- [Best Practices](#best-practices)
+    1. [Arranging Your Tests](#arranging-your-tests)
+    1. [Naming Your Tests](#naming-your-tests)
+    1. [Avoid Magic Strings](#avoid-magic-strings)
+    1. [No Logic In Tests](#no-logic-in-tests)
+    1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
+    1. [Avoid Multiple Asserts](#avoid-multiple-asserts)
+    1. [Write Minimally Passing Tests](#write-minimally-passing-tests)
+- [How Do I...?](#how-do-i)
+    1. [Test Private Methods](#test-private-methods)
+    1. [Stub Static References](#stub-static-references)
+
 ## What Makes a Good Unit Test
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
 - **Isolated**. Unit tests are standalone and can be run in isolation and have no dependencies on any outside factors such as a file system or database.
@@ -63,13 +78,6 @@ In this case, we are checking a property on the Fake (asserting against it), so 
 The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub.
 
 ## Best Practices
-1. [Arranging Your Tests](#arranging-your-tests)
-1. [Naming Your Tests](#naming-your-tests)
-1. [Avoid Magic Strings](#avoid-magic-strings)
-1. [No Logic In Tests](#no-logic-in-tests)
-1. [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
-1. [Avoid Multiple Asserts](#avoid-multiple-asserts)
-1. [Write Minimally Passing Tests](#write-minimally-passing-tests)
 
 ### Arranging Your Tests
 The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
@@ -340,8 +348,6 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 ```
 
 ## How Do I...?
-1. [Test Private Methods](#test-private-methods)
-1. [Stub Static References](#stub-static-references)
 
 ### Test Private Methods
 TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
