@@ -10,7 +10,7 @@ The purpose of this best practices document is to offer suggested best practices
     * [Arranging Your Tests](#arranging-your-tests)
     * [Naming Your Tests](#naming-your-tests)
     * [Avoid Magic Strings](#avoid-magic-strings)
-    * [No Logic In Tests](#no-logic-in-tests)
+    * [Avoid Logic In Tests](#avoid-logic-in-tests)
     * [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
     * [Avoid Multiple Asserts](#avoid-multiple-asserts)
     * [Write Minimally Passing Tests](#write-minimally-passing-tests)
@@ -178,7 +178,7 @@ public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 }
 ```
 
-### No Logic in Tests
+### Avoid Logic in Tests
 When writing your unit tests avoid manual string concatenation and logical conditions such as `if`, `while`, `for`, `switch`, etc.
 
 #### Why?
