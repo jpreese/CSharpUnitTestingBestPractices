@@ -384,7 +384,7 @@ public void ParseLogLine_ByDefault_ReturnsTrimmedResult()
 
 With this viewpoint, if you see a private method, find the public method and write your tests against that method. Just because a private method returns the expected result, does not mean the system that eventually calls the private method uses the result correctly.
 
-While there may be value in promoting a private method to `internal` or `public` for the purposes or testing in some cases, you are encouraged to think about if it's actually necessary.
+While there may be value in promoting a private method to `internal` or `public` for the purposes of testing in some cases, you are encouraged to think about if it is actually necessary.
 
 ### Stub Static References
 One of the principles of a unit test is that it must have full control of the system under test. This can be problematic when production code includes calls to static references such as `DateTime.Now` or `Random()`. Consider the following code
