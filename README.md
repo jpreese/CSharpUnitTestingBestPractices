@@ -159,7 +159,7 @@ public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 {
     var glossary = new Glossary();
 
-    var result = glossary.ParseWord("1");
+    glossary.TryParse("1", out var result)
 
     Assert.Equal(-1, result);
 }
@@ -172,7 +172,7 @@ public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
     var glossary = new Glossary();
     const int INVALID_INPUT = -1;
 
-    var result = glossary.ParseWord("1");
+    glossary.TryParse("1", out var result)
 
     Assert.Equal(INVALID_INPUT, result);
 }
@@ -350,7 +350,7 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 ## How Do I...?
 
 ### Test Private Methods
-TL;DR You don't. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
+In most cases, there should not be a need to test a private method, they are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
 
 Consider the following case
 
@@ -383,6 +383,8 @@ public void ParseLogLine_ByDefault_ReturnsTrimmedResult()
 ```
 
 With this viewpoint, if you see a private method, find the public method and write your tests against that method. Just because a private method returns the expected result, does not mean the system that eventually calls the private method uses the result correctly.
+
+While there may be value in promoting a private method to `internal` or `public` for the purposes or testing in some cases, you are encouraged to think about if it's actually necessary.
 
 ### Stub Static References
 One of the principles of a unit test is that it must have full control of the system under test. This can be problematic when production code includes calls to static references such as `DateTime.Now` or `Random()`. Consider the following code
