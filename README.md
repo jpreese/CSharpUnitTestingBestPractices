@@ -1,7 +1,7 @@
 # Unit Testing in C#
 
 ## Purpose
-The purpose of this best practices document is to offer suggested best practices when writing unit tests in C#.
+The purpose of this document is to offer suggested best practices when writing unit tests in C#.
 
 ## Contents
 - [What Makes a Good Unit Test](#what-makes-a-good-unit-test)
