@@ -276,7 +276,7 @@ When writing your tests, try to only include one Assert per test. Common approac
 - Use parameterized tests.
 
 #### Why?
-- If one Assert fails, the subsequent Asserts will not be evaluated.
+- If one Assert fails, the subsequent Asserts will not be evaluated. This limits 
 - Ensures you are not asserting multiple cases in your tests.
 
 #### Bad:
@@ -350,7 +350,7 @@ public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
 ## How Do I...?
 
 ### Test Private Methods
-In most cases, there should not be a need to test a private method, they are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
+In most cases, there should not be a need to test a private method. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
 
 Consider the following case
 
