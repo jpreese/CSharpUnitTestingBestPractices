@@ -276,7 +276,7 @@ When writing your tests, try to only include one Assert per test. Common approac
 - Use parameterized tests.
 
 #### Why?
-- If one Assert fails, the subsequent Asserts will not be evaluated. This limits 
+- If one Assert fails, the subsequent Asserts will not be evaluated.
 - Ensures you are not asserting multiple cases in your tests.
 
 #### Bad:
