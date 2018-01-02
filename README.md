@@ -264,7 +264,7 @@ public void ParseWord_EmptyString_ReturnsEmptyString()
 
 // more tests..
 
-public Glossary CreateDefaultGlossary()
+private Glossary CreateDefaultGlossary()
 {
     return new Glossary();
 }
