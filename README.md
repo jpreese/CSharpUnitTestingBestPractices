@@ -4,7 +4,11 @@
 The purpose of this document is to offer suggested best practices when writing unit tests in C#.
 
 ## Contents
-- [What Makes a Good Unit Test](#what-makes-a-good-unit-test)
+- [Why Unit Test?](#why-unit-test)
+    * [Less Time Performing Functional Tests](#less-time-performing-functional-tests)
+    * [Protection Against Regression](#protection-against-regression)
+    * [Free Documentation](#free-documentation)
+- [What Makes a Good Unit Test?](#what-makes-a-good-unit-test)
 - [Lets Speak the Same Language](#lets-speak-the-same-language)
 - [Best Practices](#best-practices)
     * [Arranging Your Tests](#arranging-your-tests)
@@ -18,7 +22,23 @@ The purpose of this document is to offer suggested best practices when writing u
     * [Test Private Methods](#test-private-methods)
     * [Stub Static References](#stub-static-references)
 
-## What Makes a Good Unit Test
+## Why Unit Test?
+### Less Time Performing Functional Tests
+Functional tests are expensive. They typically involve opening up the application and performing a series of steps that you (or someone else), must follow in order to validate the expected behavior. These steps may not always be known to the tester, which means they will have to reach out to someone more knowledgeable in the area in order to carry out the test. Testing itself could take seconds for trivial changes, or minutes for larger changes. Lastly, this process must be repeated for every change that you make in the system.
+
+Unit tests on the other hand take milliseconds, can be run at the press of a button and do not necessarily require any knowledge of the system at large. Whether or not the test passes or fails is up to the test runner, not the individual.
+
+### Protection Against Regression
+Regression defects are defects that are introduced when a change is made to the application. It's common for testers to not only test their new feature but also features that existed prior to verify that existing behavior still works as expected.
+
+With unit testing, it's possible to rerun your entire suite of tests after every build or even after you change a line of code. Giving you confidence that your new code does not break existing functionality.
+
+### Free Documentation
+It may not always be obvious what a particular method does or how it behaves given a certain input. You may ask yourself: How does this behave if I pass it a blank string? Null?
+
+When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input and on top of that, verify that it actually works.
+
+## What Makes a Good Unit Test?
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
 - **Isolated**. Unit tests are standalone, can be run in isolation, and have no dependencies on any outside factors such as a file system or database.
 - **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
