@@ -200,7 +200,7 @@ public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 
     for(int x = 0; x < result.length; x++)
     {
-        Assert.Equal(result[x], wordList[x] + '!')
+        Assert.Equal(wordList[x] + '!', result[x])
     }
 }
 ```
@@ -223,7 +223,7 @@ public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 
     var result = glossary.ExclaimAllWords(input);
 
-    Assert.Equal(result, expected);
+    Assert.Equal(expected, result);
 }
 ```
 
@@ -339,7 +339,7 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 
     var result = glossary.ConcatenateWords(firstWord, secondWord)
 
-    Assert.Equals("aardvark,baboon")
+    Assert.Equals("aardvark,baboon", result)
 }
 ```
 
@@ -351,7 +351,7 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 
     var result = glossary.ConcatenateWords("a", "b")
 
-    Assert.Equals("a,b")
+    Assert.Equals("a,b", result)
 }
 ```
 
