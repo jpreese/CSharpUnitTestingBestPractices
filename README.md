@@ -200,7 +200,7 @@ public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 
     for(int x = 0; x < result.length; x++)
     {
-        Assert.Equal(wordList[x] + '!', result[x])
+        Assert.Equal(wordList[x] + '!', result[x]);
     }
 }
 ```
