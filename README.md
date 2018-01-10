@@ -190,7 +190,7 @@ When writing your unit tests avoid manual string concatenation and logical condi
 public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 {
     var glossary = new Glossary();
-    var wordList = new[] 
+    var wordList = new string[] 
     {
         "cat",
         "dog"
@@ -210,12 +210,12 @@ public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 {
     var glossary = new Glossary();
-    var input = new[] = 
+    var input = new string[] 
     {
         "a",
         "b"
     }
-    var expected = new[] 
+    var expected = new string[] 
     {
         "a!",
         "b!"
