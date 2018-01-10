@@ -80,7 +80,7 @@ The main thing to remember about mocks versus stubs is that mocks are just like 
 ## Best Practices
 
 ### Arranging Your Tests
-The AAA (Arrange, Act, Assert) pattern is a typical pattern when unit testing, and consists of three main actions:
+Arrange, Act, Assert is a common pattern when unit testing. As the name implies, it consists of three main actions:
 - *Arrange* your objects, creating and setting them up as necessary.
 - *Act* on an object.
 - *Assert* that something is as expected.
@@ -150,16 +150,16 @@ public void IsValidWord_InputIsNull_ReturnsFalse()
 Naming variables in unit tests is as important, if not more important, than naming variables in production code. Unit tests should not contain magic strings.
 
 #### Why?
-- Prevents the need for the reader to inspect the production code to figure out what makes the value special.
+- Prevents the need for the reader of the test to inspect the production code in order to figure out what makes the value special.
 - Explicitly shows what you're trying to *prove* rather than trying to *accomplish*.
 
 #### Bad:
 ```csharp
-public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
+public void TryParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 {
     var glossary = new Glossary();
 
-    glossary.TryParse("1", out var result)
+    glossary.TryParseWord("1", out var result)
 
     Assert.Equal(-1, result);
 }
@@ -167,12 +167,12 @@ public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 
 #### Better:
 ```csharp
-public void ParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
+public void TryParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
 {
     var glossary = new Glossary();
     const int INVALID_INPUT = -1;
 
-    glossary.TryParse("1", out var result)
+    glossary.TryParseWord("1", out var result)
 
     Assert.Equal(INVALID_INPUT, result);
 }
