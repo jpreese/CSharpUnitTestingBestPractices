@@ -214,12 +214,12 @@ public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
     {
         "a",
         "b"
-    }
+    };
     var expected = new string[] 
     {
         "a!",
         "b!"
-    }
+    };
 
     var result = glossary.ExclaimAllWords(input);
 
