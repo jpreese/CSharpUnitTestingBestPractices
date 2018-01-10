@@ -294,6 +294,9 @@ When writing your tests, try to only include one Assert per test. Common approac
 #### Why?
 - If one Assert fails, the subsequent Asserts will not be evaluated.
 - Ensures you are not asserting multiple cases in your tests.
+- Gives you the entire picture as to why your tests are failing. 
+
+*Example: If you have a cold (a broken unit test), your entire body does not shut down (all subsequent tests failing). You are still able to breathe, speak, etc (passing tests that would have failed otherwise), allowing the doctor to properly diagnose you.*
 
 #### Bad:
 ```csharp
