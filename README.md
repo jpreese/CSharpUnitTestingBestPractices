@@ -332,7 +332,7 @@ The input to be used in a unit test should be the simplest possible in order to 
 
 #### Bad:
 ```csharp
-public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+public void ConcatenateWords_ByDefault_ReturnsStringWithCommaBetween()
 {
     var glossary = new Glossary();
     var firstWord = "aardvark";
@@ -346,7 +346,7 @@ public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 
 #### Better:
 ```csharp
-public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+public void ConcatenateWords_ByDefault_ReturnsStringWithCommaBetween()
 {
     var glossary = new Glossary();
 
