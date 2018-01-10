@@ -187,27 +187,43 @@ When writing your unit tests avoid manual string concatenation and logical condi
 
 #### Bad:
 ```csharp
-public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 {
     var glossary = new Glossary();
-    var firstWord = "a";
-    var secondWord = "b";
+    var wordList = new[] 
+    {
+        "cat",
+        "dog"
+    };
 
-    var result = glossary.ConcatenateWords(firstWord, secondWord);
+    var result = glossary.ExclaimAllWords(wordList);
 
-    Assert.Equals(string.Format("{0},{1}", firstWord, secondWord), result);
+    for(int x = 0; x < result.length; x++)
+    {
+        Assert.Equal(result, wordList[x] + '!')
+    }
 }
 ```
 
 #### Better:
 ```csharp
-public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
+public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
 {
     var glossary = new Glossary();
+    var input = new[] = 
+    {
+        "a",
+        "b"
+    }
+    var expected = new[] 
+    {
+        "a!",
+        "b!"
+    }
 
-    var result = glossary.ConcatenateWords("a", "b");
+    var result = glossary.ExclaimAllWords(input);
 
-    Assert.Equals("a,b", result);
+    Assert.Equal(result, expected);
 }
 ```
 
@@ -315,35 +331,27 @@ The input to be used in a unit test should be the simplest possible in order to 
 
 #### Bad:
 ```csharp
-[InlineData("aardvark")]
-[InlineData("elephant")]
-[InlineData("iguana")]
-[InlineData("orangutan")]
-[InlineData("unicorn")]
-public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
+public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 {
     var glossary = new Glossary();
+    var firstWord = "aardvark";
+    var secondWord = "baboon";
 
-    var result = glossary.WordStartsWithVowel(input);
+    var result = glossary.ConcatenateWords(firstWord, secondWord)
 
-    Assert.True(result);
+    Assert.Equals("aardvark,baboon")
 }
 ```
 
 #### Better:
 ```csharp
-[InlineData("a")]
-[InlineData("e")]
-[InlineData("i")]
-[InlineData("o")]
-[InlineData("u")]
-public void WordStartsWithVowel_InputStartsWithVowel_ReturnsTrue(string input)
+public void ConcatenateWords_TwoWords_ReturnsStringWithCommaBetween()
 {
     var glossary = new Glossary();
 
-    var result = glossary.WordStartsWithVowel(input);
+    var result = glossary.ConcatenateWords("a", "b")
 
-    Assert.True(result);
+    Assert.Equals("a,b")
 }
 ```
 
