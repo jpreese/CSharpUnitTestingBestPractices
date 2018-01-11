@@ -29,14 +29,14 @@ Functional tests are expensive. They typically involve opening up the applicatio
 Unit tests on the other hand take milliseconds, can be run at the press of a button and do not necessarily require any knowledge of the system at large. Whether or not the test passes or fails is up to the test runner, not the individual.
 
 ### Protection Against Regression
-Regression defects are defects that are introduced when a change is made to the application. It's common for testers to not only test their new feature but also features that existed prior to verify that existing behavior still works as expected.
+Regression defects are defects that are introduced when a change is made to the application. It is common for testers to not only test their new feature but also features that existed beforehand in order to verify that previously implemented features still function as expected.
 
 With unit testing, it's possible to rerun your entire suite of tests after every build or even after you change a line of code. Giving you confidence that your new code does not break existing functionality.
 
 ### Free Documentation
-It may not always be obvious what a particular method does or how it behaves given a certain input. You may ask yourself: How does this behave if I pass it a blank string? Null?
+It may not always be obvious what a particular method does or how it behaves given a certain input. You may ask yourself: How does this method behave if I pass it a blank string? Null?
 
-When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input and on top of that, verify that it actually works.
+When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input. In addition, it should be able to verify that it actually works.
 
 ## What Makes a Good Unit Test?
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
