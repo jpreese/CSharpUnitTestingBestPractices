@@ -341,8 +341,6 @@ public void IsValidWord_InputIsNullOrEmpty_ReturnsFalse(string input)
 }
 ```
 
-*Note: A common exception to this best practice is when you are validating the state of an object.*
-
 ### Write Minimally Passing Tests
 The input to be used in a unit test should be the simplest possible in order to pass the behavior that you are currently testing.
 
