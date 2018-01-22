@@ -7,7 +7,8 @@ The purpose of this document is to offer suggested best practices when writing u
 - [Why Unit Test?](#why-unit-test)
     * [Less Time Performing Functional Tests](#less-time-performing-functional-tests)
     * [Protection Against Regression](#protection-against-regression)
-    * [Free Documentation](#free-documentation)
+    * [Executable Documentation](#executable-documentation)
+    * [Less Coupled Code](#less-coupled-code)
 - [What Makes a Good Unit Test?](#what-makes-a-good-unit-test)
 - [Lets Speak the Same Language](#lets-speak-the-same-language)
 - [Best Practices](#best-practices)
@@ -23,6 +24,7 @@ The purpose of this document is to offer suggested best practices when writing u
     * [Stub Static References](#stub-static-references)
 
 ## Why Unit Test?
+
 ### Less Time Performing Functional Tests
 Functional tests are expensive. They typically involve opening up the application and performing a series of steps that you (or someone else), must follow in order to validate the expected behavior. These steps may not always be known to the tester, which means they will have to reach out to someone more knowledgeable in the area in order to carry out the test. Testing itself could take seconds for trivial changes, or minutes for larger changes. Lastly, this process must be repeated for every change that you make in the system.
 
@@ -33,10 +35,15 @@ Regression defects are defects that are introduced when a change is made to the 
 
 With unit testing, it's possible to rerun your entire suite of tests after every build or even after you change a line of code. Giving you confidence that your new code does not break existing functionality.
 
-### Free Documentation
+### Executable Documentation
 It may not always be obvious what a particular method does or how it behaves given a certain input. You may ask yourself: How does this method behave if I pass it a blank string? Null?
 
 When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input. In addition, it should be able to verify that it actually works.
+
+### Less Coupled Code
+When code is tighly coupled, it can be difficult to unit test. Without creating unit tests for the code that you're writing, coupling may be less apparent.
+
+Writing tests for your code will naturally decouple your code, because it would be near impossible to test otherwise.
 
 ## What Makes a Good Unit Test?
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
