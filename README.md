@@ -41,7 +41,7 @@ It may not always be obvious what a particular method does or how it behaves giv
 When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input. In addition, it should be able to verify that it actually works.
 
 ### Less Coupled Code
-When code is tighly coupled, it can be difficult to unit test. Without creating unit tests for the code that you're writing, coupling may be less apparent.
+When code is tightly coupled, it can be difficult to unit test. Without creating unit tests for the code that you're writing, coupling may be less apparent.
 
 Writing tests for your code will naturally decouple your code, because it would be near impossible to test otherwise.
 
