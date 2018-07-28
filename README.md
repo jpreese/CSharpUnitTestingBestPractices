@@ -1,58 +1,49 @@
-# Unit Testing in C#
+---
+title: Best practices for writing unit tests
+description: Learn best practices for writing unit tests that drive code quality and resilience
+author: jpreese
+ms.author: wiwagn
+ms.date: 07/28/2018
+---
 
-## Purpose
-The purpose of this document is to offer suggested best practices when writing unit tests in C#.
+# Unit testing best practices
 
-## Contents
-- [Why Unit Test?](#why-unit-test)
-    * [Less Time Performing Functional Tests](#less-time-performing-functional-tests)
-    * [Protection Against Regression](#protection-against-regression)
-    * [Executable Documentation](#executable-documentation)
-    * [Less Coupled Code](#less-coupled-code)
-- [What Makes a Good Unit Test?](#what-makes-a-good-unit-test)
-- [Lets Speak the Same Language](#lets-speak-the-same-language)
-- [Best Practices](#best-practices)
-    * [Arranging Your Tests](#arranging-your-tests)
-    * [Naming Your Tests](#naming-your-tests)
-    * [Avoid Magic Strings](#avoid-magic-strings)
-    * [Avoid Logic In Tests](#avoid-logic-in-tests)
-    * [Prefer Helper Methods to Setup and Teardown](#prefer-helper-methods-to-setup-and-teardown)
-    * [Avoid Multiple Asserts](#avoid-multiple-asserts)
-    * [Write Minimally Passing Tests](#write-minimally-passing-tests)
-- [How Do I...?](#how-do-i)
-    * [Test Private Methods](#test-private-methods)
-    * [Stub Static References](#stub-static-references)
+By [John Reese](http://reesespieces.io) with special thanks to [Roy Osherove](http://osherove.com/)
 
-## Why Unit Test?
+There are numerous benefits to writing unit tests; they help with regression, provide documentation, and facilitate good design. However, hard to read and brittle unit tests can wreak havoc on your code base.
 
-### Less Time Performing Functional Tests
+In this guide, you'll learn some best practices when writing unit tests to keep your tests resilient and easy to understand.
+
+## Why unit test?
+
+### Less time performing functional tests
 Functional tests are expensive. They typically involve opening up the application and performing a series of steps that you (or someone else), must follow in order to validate the expected behavior. These steps may not always be known to the tester, which means they will have to reach out to someone more knowledgeable in the area in order to carry out the test. Testing itself could take seconds for trivial changes, or minutes for larger changes. Lastly, this process must be repeated for every change that you make in the system.
 
-Unit tests on the other hand take milliseconds, can be run at the press of a button and do not necessarily require any knowledge of the system at large. Whether or not the test passes or fails is up to the test runner, not the individual.
+Unit tests, on the other hand, take milliseconds, can be run at the press of a button and do not necessarily require any knowledge of the system at large. Whether or not the test passes or fails is up to the test runner, not the individual.
 
-### Protection Against Regression
+### Protection against regression
 Regression defects are defects that are introduced when a change is made to the application. It is common for testers to not only test their new feature but also features that existed beforehand in order to verify that previously implemented features still function as expected.
 
 With unit testing, it's possible to rerun your entire suite of tests after every build or even after you change a line of code. Giving you confidence that your new code does not break existing functionality.
 
-### Executable Documentation
+### Executable documentation
 It may not always be obvious what a particular method does or how it behaves given a certain input. You may ask yourself: How does this method behave if I pass it a blank string? Null?
 
 When you have a suite of well-named unit tests, each test should be able to clearly explain the expected output for a given input. In addition, it should be able to verify that it actually works.
 
-### Less Coupled Code
+### Less coupled code
 When code is tightly coupled, it can be difficult to unit test. Without creating unit tests for the code that you're writing, coupling may be less apparent.
 
-Writing tests for your code will naturally decouple your code, because it would be near impossible to test otherwise.
+Writing tests for your code will naturally decouple your code, because it would be more difficult to test otherwise.
 
-## What Makes a Good Unit Test?
+## Characteristics of a good unit test
 - **Fast**. It is not uncommon for mature projects to have thousands of unit tests. Unit tests should take very little time to run. Milliseconds.
 - **Isolated**. Unit tests are standalone, can be run in isolation, and have no dependencies on any outside factors such as a file system or database.
 - **Repeatable**. Running a unit test should be consistent with its results, that is, it always returns the same result if you do not change anything in between runs.
 - **Self-Checking**. The test should be able to automatically detect if it passed or failed without any human interaction.
 - **Timely**. A unit test should not take a disproportionally long time to write compared to the code being tested. If you find testing the code taking a large amount of time compared to writing the code, consider a design that is more testable.
 
-## Lets Speak the Same Language
+## Let's speak the same language
 The term *mock* is unfortunately very misused when talking about testing. The following defines the most common types of *fakes* when writing unit tests:
 
 *Fake* - A fake is a generic term which can be used to describe either a stub or a mock object. Whether it is a stub or a mock depends on the context in which it's used. So in other words, a fake can be a stub or a mock.
@@ -72,7 +63,7 @@ purchase.ValidateOrders();
 Assert.True(purchase.CanBeShipped);
 ```
 
-This would be an example of Mock being used improperly. In this case, it is a stub. We're just passing in the Order as a means to be able to instantiate `Purchase` (the system under test). The name `MockOrder` is also very misleading because again, the order is not a mock.
+This would be an example of stub being referred to as a mock. In this case, it is a stub. We're just passing in the Order as a means to be able to instantiate `Purchase` (the system under test). The name `MockOrder` is also very misleading because again, the order is not a mock.
 
 A better approach would be
 
@@ -100,14 +91,31 @@ Assert.True(mockOrder.Validated);
 
 In this case, we are checking a property on the Fake (asserting against it), so in the above code snippet, the `mockOrder` is a Mock.
 
-**It's important to get this terminology correct. If you call your stubs "mocks", other developers are going to make false assumptions about your intent.**
+[!IMPORTANT] It's important to get this terminology correct. If you call your stubs "mocks", other developers are going to make false assumptions about your intent.
 
 The main thing to remember about mocks versus stubs is that mocks are just like stubs, but you assert against the mock object, whereas you do not assert against a stub.
 
-## Best Practices
+## Best practices
 
-### Arranging Your Tests
-Arrange, Act, Assert is a common pattern when unit testing. As the name implies, it consists of three main actions:
+### Naming your tests
+The name of your test should consist of three parts:
+- The name of the method being tested.
+- The scenario under which it's being tested.
+- The expected behavior when the scenario is invoked.
+
+#### Why?
+- Naming standards are important because they explicitly express the intent of the test.
+
+Tests are more than just making sure our code works, they also provide us with documentation. Just by looking at the suite of unit tests, we should be able to infer the behavior of our code without even looking at the code itself. Additionally, when tests fail, we can see exactly which scenarios do not meet our expectations.
+
+#### Bad:
+[!code-csharp[BeforeNaming](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeNaming)]
+
+#### Better:
+[!code-csharp[AfterNamingAndMinimallyPassing](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterNamingAndMinimallyPassing)]
+
+### Arranging your tests
+**Arrange, Act, Assert** is a common pattern when unit testing. As the name implies, it consists of three main actions:
 - *Arrange* your objects, creating and setting them up as necessary.
 - *Act* on an object.
 - *Assert* that something is as expected.
@@ -116,145 +124,64 @@ Arrange, Act, Assert is a common pattern when unit testing. As the name implies,
 - Clearly separates what is being tested from the *arrange* and *assert* steps.
 - Less chance to intermix assertions with "Act" code.
 
-#### Bad:
-```csharp
-public void IsValidWord_InputIsNull_ReturnsFalse()
-{
-    // Arrange
-    var glossary = new Glossary();
+Readability is one of the most important aspects when writing a test. Separating each of these actions within the test clearly highlight the dependencies required to call our code, how our code is being called, and what we are trying to assert. While it may be possible to combine some steps and reduce the size of our test, our primary goal is to make the test as readable as possible.
 
-    // Assert
-    Assert.False(glossary.IsValidWord(null));
-}
-```
+#### Bad:
+[!code-csharp[BeforeArranging](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeArranging)]
 
 #### Better:
-```csharp
-public void IsValidWord_InputIsNull_ReturnsFalse()
-{
-    var glossary = new Glossary();
-    
-    var result = glossary.IsValidWord(null);
+[!code-csharp[AfterArranging](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterArranging)]
 
-    Assert.False(result);
-}
-```
-
-### Naming Your Tests
-The name of your test should consist of three parts:
-- The name of the method being tested.
-- The scenario under which it's being tested.
-- The expected behavior when the scenario is invoked.
+### Write minimally passing tests
+The input to be used in a unit test should be the simplest possible in order to verify the behavior that you are currently testing.
 
 #### Why?
-- Naming standards are important because they explicitly express intent of the test.
+- Tests become more resilient to future changes in the codebase.
+- Closer to testing behavior over implementation.
+
+Tests that include more information than required to pass the test have a higher chance of introducing errors into the test and can make the intent of the test less clear. When writing tests we want to focus on the behavior. Setting extra properties on models or using non-zero values when not required, only detracts from what you are trying to prove.
 
 #### Bad:
-```csharp
-public void Test_Invalid()
-{
-    var glossary = new Glossary();
-
-    var result = glossary.IsValidWord(null);
-
-    Assert.False(result);
-}
-```
+[!code-csharp[BeforeMinimallyPassing](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeMinimallyPassing)]
 
 #### Better:
-```csharp
-public void IsValidWord_InputIsNull_ReturnsFalse()
-{
-    var glossary = new Glossary();
+[!code-csharp[AfterNamingAndMinimallyPassing](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterNamingAndMinimallyPassing)]
 
-    var result = glossary.IsValidWord(null);
-
-    Assert.False(result);
-}
-```
-
-### Avoid Magic Strings
+### Avoid magic strings
 Naming variables in unit tests is as important, if not more important, than naming variables in production code. Unit tests should not contain magic strings.
 
 #### Why?
 - Prevents the need for the reader of the test to inspect the production code in order to figure out what makes the value special.
 - Explicitly shows what you're trying to *prove* rather than trying to *accomplish*.
 
+Magic strings can cause confusion to the reader of your tests. If a string looks out of the ordinary, they may wonder why a certain value was chosen for a parameter or return value. This may lead them to take a closer look at the implementation details, rather than focus on the test.
+
+[!TIP] When writing tests, we should aim to express as much intent as possible. In the case of magic strings, a good approach is to assign these values to constants.
+
 #### Bad:
-```csharp
-public void TryParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
-{
-    var glossary = new Glossary();
-
-    glossary.TryParseWord("1", out var result)
-
-    Assert.Equal(-1, result);
-}
-```
+[!code-csharp[BeforeMagicString](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeMagicString)]
 
 #### Better:
-```csharp
-public void TryParseWord_InputIsNumber_ReturnsInvalidInputErrorCode()
-{
-    var glossary = new Glossary();
-    const int INVALID_INPUT = -1;
+[!code-csharp[AfterMagicString](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterMagicString)]
 
-    glossary.TryParseWord("1", out var result)
-
-    Assert.Equal(INVALID_INPUT, result);
-}
-```
-
-### Avoid Logic in Tests
+### Avoid logic in tests
 When writing your unit tests avoid manual string concatenation and logical conditions such as `if`, `while`, `for`, `switch`, etc.
 
 #### Why?
 - Less chance to introduce a bug inside of your tests.
 - Focus on the end result, rather than implementation details.
 
+The last place that you want to find a bug is within your test suite. We should have a high level of confidence in our tests, otherwise, they are not going to provide a whole lot of value. When we introduce logic into our tests, the chances of introducing a bug increases dramatically.
+
+[!TIP] If it feels like logic is required in your test, consider splitting the test up into two or more different tests.
+
 #### Bad:
-```csharp
-public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
-{
-    var glossary = new Glossary();
-    var wordList = new string[] 
-    {
-        "cat",
-        "dog"
-    };
-
-    var result = glossary.ExclaimAllWords(wordList);
-
-    for(int x = 0; x < result.length; x++)
-    {
-        Assert.Equal(wordList[x] + '!', result[x]);
-    }
-}
-```
+[!code-csharp[LogicInTests](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#LogicInTests)]
 
 #### Better:
-```csharp
-public void ExclaimAllWords_TwoWords_ReturnsArrayOfExclaimedWords()
-{
-    var glossary = new Glossary();
-    var input = new string[] 
-    {
-        "a",
-        "b"
-    };
-    var expected = new string[] 
-    {
-        "a!",
-        "b!"
-    };
+[!code-csharp[AfterTestLogic](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterTestLogic)]
 
-    var result = glossary.ExclaimAllWords(input);
-
-    Assert.Equal(expected, result);
-}
-```
-
-### Prefer Helper Methods to Setup and Teardown
+### Prefer helper methods to setup and teardown
 If you require a similar object or state for your tests, prefer a helper method than leveraging Setup and Teardown attributes if they exist.
 
 #### Why?
@@ -262,58 +189,29 @@ If you require a similar object or state for your tests, prefer a helper method 
 - Less chance of setting up too much or too little for the given test.
 - Less chance of sharing state between tests which creates unwanted dependencies between them.
 
+In unit testing frameworks, `Setup` is called before each and every unit test within your test suite. While some may see this as a useful tool, it generally ends up leading to bloated and hard to read tests. Each test will generally have different requirements in order to get the test up and running. Unfortunately, `Setup` forces you to use the exact same requirements for each test.
+
+[!NOTE] xUnit has removed both SetUp and TearDown as of version 2.x
+
 #### Bad:
+[!code-csharp[BeforeSetup](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeSetup)]
+
 ```csharp
-Glossary glossary;
-
-[SetUp]
-public void Initialize()
-{
-    glossary = new Glossary();
-}
-
-// more tests..
-
-public void ParseWord_NullValue_ThrowsArgumentException()
-{
-    Assert.Throws<ArgumentException>(() => glossary.ParseWord(null));
-}
-
-public void ParseWord_EmptyString_ReturnsEmptyString()
-{
-    Assert.Empty(glossary.ParseWord(""));
-}
+// more tests...
 ```
+
+[!code-csharp[BeforeHelperMethod](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeHelperMethod)]
 
 #### Better:
+[!code-csharp[AfterHelperMethod](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterHelperMethod)]
+
 ```csharp
-public void ParseWord_NullValue_ThrowsArgumentException()
-{
-    var glossary = CreateDefaultGlossary();
-
-    var result = () => glossary.ParseWord(null);
-
-    Assert.Throws<ArgumentException>(result);
-}
-
-public void ParseWord_EmptyString_ReturnsEmptyString()
-{
-    var glossary = CreateDefaultGlossary();
-
-    var result = glossary.ParseWord("");
-
-    Assert.Empty(result);
-}
-
-// more tests..
-
-private Glossary CreateDefaultGlossary()
-{
-    return new Glossary();
-}
+// more tests...
 ```
 
-### Avoid Multiple Asserts
+[!code-csharp[AfterSetup](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterSetup)]
+
+### Avoid multiple asserts
 When writing your tests, try to only include one Assert per test. Common approaches to using only one assert include:
 - Create a separate test for each assert.
 - Use parameterized tests.
@@ -323,67 +221,17 @@ When writing your tests, try to only include one Assert per test. Common approac
 - Ensures you are not asserting multiple cases in your tests.
 - Gives you the entire picture as to why your tests are failing. 
 
-#### Bad:
-```csharp
-public void IsValidWord_InputIsNullOrEmpty_ReturnsFalse()
-{
-    var glossary = new Glossary();
+When introducing multiple asserts into a test case, it is not guaranteed that all of the asserts will be executed. In most unit testing frameworks, once an assertion fails in a unit test, the proceeding tests are automatically considered to be failing. This can be confusing as functionality that is actually working, will be shown as failing.
 
-    Assert.False(glossary.IsValidWord(null)); // potential NullException
-    Assert.False(glossary.IsValidWord("")); // this never gets executed if the above test fails
-}
-```
-
-#### Better:
-```csharp
-[InlineData(null)]
-[InlineData("")]
-public void IsValidWord_InputIsNullOrEmpty_ReturnsFalse(string input)
-{
-    var glossary = new Glossary();
-    
-    var result = glossary.IsValidWord(input);
-
-    Assert.False(result);
-}
-```
-
-### Write Minimally Passing Tests
-The input to be used in a unit test should be the simplest possible in order to pass the behavior that you are currently testing.
-
-#### Why?
-- Tests become more resilient to future changes in the codebase.
-- Closer to testing behavior over implementation.
+[!NOTE] A common exception to this rule is when asserting against an object. In this case, it is generally acceptable to have multiple asserts against each property to ensure the object is in the state that we expect it to be in.
 
 #### Bad:
-```csharp
-public void ConcatenateWords_ByDefault_ReturnsStringWithCommaBetween()
-{
-    var glossary = new Glossary();
-    var firstWord = "aardvark";
-    var secondWord = "baboon";
-
-    var result = glossary.ConcatenateWords(firstWord, secondWord)
-
-    Assert.Equals("aardvark,baboon", result)
-}
-```
+[!code-csharp[BeforeMultipleAsserts](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#BeforeMultipleAsserts)]
 
 #### Better:
-```csharp
-public void ConcatenateWords_ByDefault_ReturnsStringWithCommaBetween()
-{
-    var glossary = new Glossary();
+[!code-csharp[AfterMultipleAsserts](../../../samples/csharp/unit-testing-best-practices/after/StringCalculatorTests.cs#AfterMultipleAsserts)]
 
-    var result = glossary.ConcatenateWords("a", "b")
-
-    Assert.Equals("a,b", result)
-}
-```
-
-## How Do I...?
-
-### Test Private Methods
+### Validate private methods by unit testing public methods
 In most cases, there should not be a need to test a private method. Private methods are an implementation detail. You can think of it this way: private methods never exist in isolation. At some point, there is going to be a public facing method that calls the private method as part of its implementation. What you should care about is the end result of the public method that calls into the private one. 
 
 Consider the following case
@@ -418,19 +266,19 @@ public void ParseLogLine_ByDefault_ReturnsTrimmedResult()
 
 With this viewpoint, if you see a private method, find the public method and write your tests against that method. Just because a private method returns the expected result, does not mean the system that eventually calls the private method uses the result correctly.
 
-### Stub Static References
+### Stub static references
 One of the principles of a unit test is that it must have full control of the system under test. This can be problematic when production code includes calls to static references (e.g. `DateTime.Now`). Consider the following code
 
 ```csharp
-public bool CanPerformOperation()
+public int GetDiscountedPrice(int price)
 {
-    if(DateTime.Now == DayOfWeek.Sunday) 
+    if(DateTime.Now == DayOfWeek.Tuesday) 
     {
-        return true;
+        return price / 2;
     }
     else 
     {
-        return false;
+        return price;
     }
 }
 ```
@@ -438,28 +286,28 @@ public bool CanPerformOperation()
 How can this code possibly be unit tested? You may try an approach such as
 
 ```csharp
-public void CanPerformOperation_OnSunday_ReturnsTrue()
+public void GetDiscountedPrice_OnTuesday_ReturnsHalfPrice()
 {
-    var operationService = new OperationService();
+    var priceCalculator = new PriceCalculator();
 
-    var result = operationService.CanPerformOperation();
+    var actual = priceCalculator.GetDiscountedPrice(2);
 
-    Assert.True(result);
+    Assert.Equals(1, actual);
 }
 
-public void CanPerformOperation_OnMonday_ReturnsFalse()
+public void GetDiscountedPrice_ByDefault_ReturnsFullPrice()
 {
-    var operationService = new OperationService();
+    var priceCalculator = new PriceCalculator();
 
-    var result = operationService.CanPerformOperation();
+    var actual = priceCalculator.GetDiscountedPrice(2);
 
-    Assert.False(result);   
+    Assert.Equals(2, actual)
 }
 ```
 
 Unfortunately, you will quickly realize that there are a few problems with your tests. 
 
-- If the test suite is ran on a Sunday, the first test will pass, and the second test will fail.
+- If the test suite is ran on a Tuesday, the first test will pass, and the second test will fail.
 - If the test suite is ran on any other day, the first test will fail, and the second test will pass.
 - How is it even possible to test a specific day of the week..?
 
@@ -471,15 +319,15 @@ public interface IDateTimeProvider
     DayOfWeek DayOfWeek();
 }
 
-public bool CanPerformOperation(IDateTimeProvider dateTimeProvider)
+public bool GetDiscountedPrice(int price, IDateTimeProvider dateTimeProvider)
 {
-    if(dateTimeProvider.DayOfWeek() == DayOfWeek.Sunday)
+    if(DateTime.Now == DayOfWeek.Tuesday) 
     {
-        return true;
+        return price / 2;
     }
-    else
+    else 
     {
-        return false;
+        return price;
     }
 }
 ```
@@ -487,26 +335,26 @@ public bool CanPerformOperation(IDateTimeProvider dateTimeProvider)
 Your test suite now becomes
 
 ```csharp
-public void CanPerformOperation_OnSunday_ReturnsTrue()
+public void GetDiscountedPrice_ByDefault_ReturnsFullPrice()
 {
-    var operationService = new OperationService();
-    var dateTimeProviderStub = new Mock<IDateTimeProvider>();
-    dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Sunday);
-
-    var result = operationService.CanPerformOperation(dateTimeProviderStub);
-
-    Assert.True(result);
-}
-
-public void CanPerformOperation_OnMonday_ReturnsFalse()
-{
-    var operationService = new OperationService();
+    var priceCalculator = new PriceCalculator();
     var dateTimeProviderStub = new Mock<IDateTimeProvider>();
     dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Monday);
 
-    var result = operationService.CanPerformOperation(dateTimeProviderStub);
+    var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
 
-    Assert.False(result);
+    Assert.Equals(2, actual);
+}
+
+public void GetDiscountedPrice_OnTuesday_ReturnsFullPrice()
+{
+    var priceCalculator = new PriceCalculator();
+    var dateTimeProviderStub = new Mock<IDateTimeProvider>();
+    dateTimeProviderStub.Setup(dtp => dtp.DayOfWeek()).Returns(DayOfWeek.Tuesday);
+
+    var actual = priceCalculator.GetDiscountedPrice(2, dateTimeProviderStub);
+
+    Assert.Equals(1, actual);
 }
 ```
 
