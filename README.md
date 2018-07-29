@@ -171,9 +171,9 @@ When writing your unit tests avoid manual string concatenation and logical condi
 - Less chance to introduce a bug inside of your tests.
 - Focus on the end result, rather than implementation details.
 
-The last place that you want to find a bug is within your test suite. We should have a high level of confidence in our tests, otherwise, they are not going to provide a whole lot of value. When we introduce logic into our tests, the chances of introducing a bug increases dramatically.
+When we add logic into our test suite, we dramatically increase the chance of introducing a bug into it. The last place that you want to find a bug is within your test suite. We should have a high level of confidence that our tests work, otherwise, we aren't going to trust them. Tests that we do not trust, do not provide any value. When a test fails, we want to have a sense that something is actually wrong with our code and it cannot be ignored.
 
-[!TIP] If it feels like logic is required in your test, consider splitting the test up into two or more different tests.
+[!TIP] If logic in your test seems unavoidable, consider splitting the test up into two or more different tests.
 
 #### Bad:
 [!code-csharp[LogicInTests](../../../samples/csharp/unit-testing-best-practices/before/StringCalculatorTests.cs#LogicInTests)]
@@ -346,7 +346,7 @@ public void GetDiscountedPrice_ByDefault_ReturnsFullPrice()
     Assert.Equals(2, actual);
 }
 
-public void GetDiscountedPrice_OnTuesday_ReturnsFullPrice()
+public void GetDiscountedPrice_OnTuesday_ReturnsHalfPrice()
 {
     var priceCalculator = new PriceCalculator();
     var dateTimeProviderStub = new Mock<IDateTimeProvider>();
