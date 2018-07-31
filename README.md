@@ -6,6 +6,10 @@ ms.author: wiwagn
 ms.date: 07/28/2018
 ---
 
+# UPDATE:
+> This document has been added to the Microsoft docs website [https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices) <br/><br/>
+Please use the [microsoft docs repository](https://github.com/dotnet/docs/blob/master/docs/core/testing/unit-testing-best-practices.md) for any additional pull requests.
+<br/><br/>
 # Unit testing best practices
 
 By [John Reese](http://reesespieces.io) with special thanks to [Roy Osherove](http://osherove.com/)
